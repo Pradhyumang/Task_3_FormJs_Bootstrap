@@ -11,7 +11,10 @@ class Main {
     const frm = new Form(formContainerId, formData); // form js class to create form and access its methods
     const storage = new Storage(storageId); // storage class to access storage methods
     const tbl = new Table(tableContainerId); // table js class to create table and access its methods
-    console.log(formData, frm, storage, tbl, 'Printed all instance of the class to remove eslint error');
+    // console.log(formData, frm, storage, tbl, 'Printed all instance of the class to remove eslint error');
+    
+    
+    tbl.createTable(formData);
   }
 }
 //formContainerId: HTML Div element id inside of which you want to create form4
@@ -24,6 +27,6 @@ class Main {
 // tableContainerId -> #tableDiv of current index.html
 
 //pass formContainerId, storageId, tableContainerId to Main(formContainerId, storageId, tableContainerId)
-const main = new Main('employeeForm', 'storageId', 'tableDiv');
+const main = new Main('employeeForm', 'employeeData', 'tableDiv');
 console.log('this is main');
 console.log(main);

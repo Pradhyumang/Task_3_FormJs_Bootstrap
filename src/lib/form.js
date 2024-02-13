@@ -17,6 +17,7 @@ export default class Form {
     // console.log('Form data in form.js', formData);
     this.createForm(formData);
     // this.createForm();
+    this.clickSubmit(formData);
   }
   // form creation CREATEFORM
   // create methods/event to create form/ reset form/ submit form, etc\
@@ -61,7 +62,7 @@ export default class Form {
     if(elementData.attr.name)
     element.setAttribute('name',elementData.attr.name)
     if(elementData.attr.required)
-    element.setAttribute('require',elementData.attr.required)
+    element.setAttribute('required',elementData.attr.required)
     if(elementData.attr.onchange)
     element.setAttribute('onchange',elementData.attr.onchange)
     if(elementData.attr.value)
@@ -197,9 +198,52 @@ export default class Form {
   }
   // END FORM CREATION 
 
-  
-  // TableCRETION
-  createTable(){
-    
-  }
+  // validateFormData(data){
+  //   if (data.checkName && data.checkGender && data.checkDate 
+  //     && data.checkEmail  && data.checkHobbies && data.checkMob) {
+  //         if (data.checkMob=='empty') {
+  //           data.checkMob='';
+  //         }
+  //     const validData={
+  //       empName:data.checkName,
+  //       empGender:data.checkGender,
+  //       empDOB:data.checkDate,
+  //       empEmail:data.checkEmail,
+  //       empMob:data.checkMob,
+  //       empHobbies:data.checkHobbies
+  //      }
+  //      return validData;
+  //   }
+  //  }
+
+   getFormData(formData)
+    {
+      const tempData={};
+      formData.forEach((element)=>{
+        if (element && element.attr) {
+          tempData[element.attr.id]= document.getElementById(element.attr.id).value.trim();
+        }
+        if (element && element.options ) {
+          element.options.forEach((optionID)=>{
+            if (optionID.attr) {
+              const option=document.getElementById(optionID.attr.id);
+              console.log(option);
+              if (option.checked) {
+                tempData[optionID.attr.id]= option.value;             
+              }
+            }
+          })
+        }
+      });
+// alldaata
+       console.log(tempData);
+     
+    }
+    clickSubmit(formData){
+      const submitBtn=document.getElementById('employeeForm');
+      submitBtn.addEventListener('submit',()=>{
+        // console.log('submit clickes .....');
+        this.getFormData(formData);
+      })
+    }
 }

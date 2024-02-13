@@ -43,3 +43,22 @@ justify-content: center;
       width: 90%
     }
   }
+
+
+.tableSection{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: auto;
+}
+.tableSection >div {
+    padding: 4%;
+}
+caption{
+    padding-left: 10px;
+    color: white;
+    font-weight: bold;
+}
+table{
+    
+}
