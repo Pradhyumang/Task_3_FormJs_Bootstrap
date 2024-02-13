@@ -1,0 +1,45 @@
+/* write css to design form/table */
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+  html,body{
+    height: 100%;
+    width: 100%;
+    /* font-family: system-ui; */
+}
+input[type='reset']{
+    background-color: red;
+}
+.reset,.submit{
+border-radius: 0;
+}
+label{
+    font-weight: 500;
+    margin: 4px 0px 4px 0px;
+}
+body{
+    background: 
+         linear-gradient(to right, #3399ff 0%, #ff99ff 100%);
+    
+}
+form{
+    width: 70%;
+    padding: 35px;
+    background-color: 	rgba(255, 255, 255, 1) ;
+}
+.title{
+    color: white;
+    margin: 10px 0px 10px 0px;
+}
+.container , .title{
+display: flex;
+justify-content: center;
+
+}
+@media screen and (max-width: 600px) {
+    form {
+      width: 90%
+    }
+  }
