@@ -198,36 +198,117 @@ export default class Form {
   }
   // END FORM CREATION 
 
-  // validateFormData(data){
-  //   if (data.checkName && data.checkGender && data.checkDate 
-  //     && data.checkEmail  && data.checkHobbies && data.checkMob) {
-  //         if (data.checkMob=='empty') {
-  //           data.checkMob='';
-  //         }
-  //     const validData={
-  //       empName:data.checkName,
-  //       empGender:data.checkGender,
-  //       empDOB:data.checkDate,
-  //       empEmail:data.checkEmail,
-  //       empMob:data.checkMob,
-  //       empHobbies:data.checkHobbies
-  //      }
-  //      return validData;
-  //   }
-  //  }
+  validateFormData(tempData,formData){
+   
+    // const size = Object.keys(tempData).length;
+    // console.log(size,'size of Temp Data');   
+    // for (let key in tempData){
+    //   if (tempData[key]) {
+    //     // console.log(tempData[key]);
+    //     validData[key]=tempData[key];
+    //   }
+    // }
+    // console.log(validData);
+    // console.log(Object.keys(validData).length,'valid Data Length');
+
+    const requiredFields = [];
+    formData.forEach((obj)=>{ 
+      if (obj.attr) {
+        if (obj.attr.required) {
+          // console.log(obj.attr.required,'required');
+          requiredFields[requiredFields.length]=obj.attr.id;
+        }
+      }
+      if (obj.type=='radio') {
+        if (obj.options) {
+          let tempName;
+          obj.options.forEach((obj)=>{
+            if (obj.attr) {
+              if (obj.attr.required) {
+                // console.log(obj.attr.required,'required option');
+               tempName=obj.name;
+              //  requiredFields[requiredFields.length]=obj.attr.id;
+              }
+            }
+          })
+          requiredFields[requiredFields.length]=tempName;
+        }
+      }else if(obj.type=='checkbox'){
+        if (obj.options) {
+          obj.options.forEach((obj)=>{
+            if (obj.attr) {
+              if (obj.attr.required) {
+                // console.log(obj.attr.required,'required option');
+                requiredFields[requiredFields.length]=obj.attr.id;
+              }
+            }
+          })
+          
+        }
+      }
+      
+    })
+    // for (let key in tempData){
+    //   requiredFields[requiredFields.length]=key;
+    // }
+    // console.log(requiredFields);
+    const validData = {};
+    for (let key of requiredFields) {
+      let genType;
+      formData.forEach((obj)=>{
+        if (obj.type=='radio') {
+          genType= obj.options.name;
+        }
+       
+      })
+
+      if(tempData[key]==genType) {
+          formData.forEach((obj)=>{
+            let radioValue;
+            if (obj.type=='radio') {
+              obj.options.forEach((obj)=>{
+                const radioBtn=document.getElementById(obj.attr.id);
+                if(radioBtn.checked)
+                {
+                  console.log(radioBtn.value);
+                  radioValue =radioBtn.value;
+                }
+                validData[key] =radioValue;
+              })
+            }
+            
+          })
+      }else{
+        if (!tempData[key]) {
+          return undefined;
+         }
+          else
+          validData[key] = tempData[key];
+      }
+        
+        
+    }
+// console.log(validData,'in validateFormData ...');
+    return validData;
+   }
 
    getFormData(formData)
     {
       const tempData={};
       formData.forEach((element)=>{
         if (element && element.attr) {
-          tempData[element.attr.id]= document.getElementById(element.attr.id).value.trim();
+        if (element.type!='submit') {
+          if (element.type!='reset') {
+            tempData[element.attr.id]= document.getElementById(element.attr.id).value.trim();   
+          } 
+       }
+       
         }
         if (element && element.options ) {
           element.options.forEach((optionID)=>{
             if (optionID.attr) {
               const option=document.getElementById(optionID.attr.id);
-              console.log(option);
+              // console.log(option);
               if (option.checked) {
                 tempData[optionID.attr.id]= option.value;             
               }
@@ -235,8 +316,10 @@ export default class Form {
           })
         }
       });
-// alldaata
+      // allData
        console.log(tempData);
+      const validData= this.validateFormData(tempData,formData);
+      console.log(validData);
      
     }
     clickSubmit(formData){

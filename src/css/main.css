@@ -52,13 +52,16 @@ justify-content: center;
     overflow: auto;
 }
 .tableSection >div {
-    padding: 4%;
+    padding: 5%;
 }
 caption{
     padding-left: 10px;
     color: white;
     font-weight: bold;
 }
-table{
-    
+form .textInput{
+    background-color: #E6E6E6;
+}
+.columns{
+    background-color: #E6E6E6;
 }
