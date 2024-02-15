@@ -258,6 +258,17 @@ export default class Form {
     //   requiredFields[requiredFields.length]=key;
     // }
     // console.log(requiredFields);
+    // let id;
+    // formData.forEach((elementData)=>{
+    //   if (elementData.hasOwnProperty('getValue')) {
+    //     document.getElementsByTagName('')
+    //     element.addEventListener('change', (event)=> {
+    //       console.log('texst erer', event, elementData)
+    //     })
+    //   }
+    // })
+     
+    // console.log(id);
 
     const validData = {};
 
