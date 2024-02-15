@@ -15,6 +15,15 @@ class Main {
     
     
     tbl.createTable(formData);
+    // submit btn CLick
+    const formTag=document.getElementById(formContainerId);
+    formTag.addEventListener('submit',()=>{
+     const data= frm.getFormData(formData);
+    //  console.log('data--->', data);
+        storage.setStorage(data);
+    })
+
+
   }
 }
 //formContainerId: HTML Div element id inside of which you want to create form4
@@ -28,5 +37,5 @@ class Main {
 
 //pass formContainerId, storageId, tableContainerId to Main(formContainerId, storageId, tableContainerId)
 const main = new Main('employeeForm', 'employeeData', 'tableDiv');
-console.log('this is main');
-console.log(main);
+// console.log('this is main');
+// console.log(main);

@@ -17,7 +17,7 @@ export default class Form {
     // console.log('Form data in form.js', formData);
     this.createForm(formData);
     // this.createForm();
-    this.clickSubmit(formData);
+    // this.clickSubmit(formData);
   }
   // form creation CREATEFORM
   // create methods/event to create form/ reset form/ submit form, etc\
@@ -65,6 +65,14 @@ export default class Form {
     element.setAttribute('required',elementData.attr.required)
     if(elementData.attr.onchange)
     element.setAttribute('onchange',elementData.attr.onchange)
+    if (elementData.attr.pattern) 
+    element.setAttribute('pattern',elementData.attr.pattern)
+    if (elementData.attr.disabled) 
+    element.setAttribute('disabled',elementData.attr.disabled)
+    if (elementData.attr.formnovalidate) 
+    element.setAttribute('formnovalidate',elementData.attr.formnovalidate)
+    if (elementData.attr.autocomplete) 
+    element.setAttribute('autocomplete',elementData.attr.autocomplete)
     if(elementData.attr.value)
     element.setAttribute('value',elementData.attr.value);
     // if (elementData.value)
@@ -99,7 +107,7 @@ export default class Form {
       if (option.attr.required)
       radioCheckboxElement.setAttribute('required',option.attr.required);
       if (elementData.type=='radio')
-          if(option.value=='male'||option.value=='Male'||option.value=='MALE')
+          if(option.value)//=='male'||option.value=='Male'||option.value=='MALE'
                 radioCheckboxElement.setAttribute('checked',true);
       // radioTagCreated.setAttribute('class',option.attr.className);
       this.container.appendChild(radioCheckboxElement);
@@ -124,6 +132,13 @@ export default class Form {
        {
           this.setLabel(elementData);
           const element=document.createElement('input');
+          // if (elementData.attr.hasOwnProperty('onchange')) {
+          //   element.addEventListener('change', (event)=> {
+          //     console.log('erer', event.target              )
+          //     event.target.classList.add('teet')
+        
+          //   })
+          // }
           //set attribue method
           this.setAttbts(element,elementData);
           this.container.appendChild(element);
@@ -148,6 +163,12 @@ export default class Form {
           this.setLabel(elementData);
           const element=document.createElement('textarea');
           //set attribuess method call
+          // if (elementData.attr.hasOwnProperty('onchange')) {
+          //   element.addEventListener('change', (event)=> {
+          //     console.log('texst erer', event, elementData)
+          //   })
+          // }
+          // console.log('elementData--->', );
           this.setAttbts(element,elementData);
           this.container.appendChild(element);
   }
@@ -199,18 +220,6 @@ export default class Form {
   // END FORM CREATION 
 
   validateFormData(tempData,formData){
-   
-    // const size = Object.keys(tempData).length;
-    // console.log(size,'size of Temp Data');   
-    // for (let key in tempData){
-    //   if (tempData[key]) {
-    //     // console.log(tempData[key]);
-    //     validData[key]=tempData[key];
-    //   }
-    // }
-    // console.log(validData);
-    // console.log(Object.keys(validData).length,'valid Data Length');
-
     const requiredFields = [];
     formData.forEach((obj)=>{ 
       if (obj.attr) {
@@ -225,9 +234,7 @@ export default class Form {
           obj.options.forEach((obj)=>{
             if (obj.attr) {
               if (obj.attr.required) {
-                // console.log(obj.attr.required,'required option');
                tempName=obj.name;
-              //  requiredFields[requiredFields.length]=obj.attr.id;
               }
             }
           })
@@ -238,58 +245,62 @@ export default class Form {
           obj.options.forEach((obj)=>{
             if (obj.attr) {
               if (obj.attr.required) {
-                // console.log(obj.attr.required,'required option');
                 requiredFields[requiredFields.length]=obj.attr.id;
               }
             }
           })
-          
         }
       }
       
     })
+    //required field done getting in array done
     // for (let key in tempData){
     //   requiredFields[requiredFields.length]=key;
     // }
     // console.log(requiredFields);
-    const validData = {};
-    for (let key of requiredFields) {
-      let genType;
-      formData.forEach((obj)=>{
-        if (obj.type=='radio') {
-          genType= obj.options.name;
-        }
-       
-      })
 
-      if(tempData[key]==genType) {
-          formData.forEach((obj)=>{
-            let radioValue;
-            if (obj.type=='radio') {
-              obj.options.forEach((obj)=>{
-                const radioBtn=document.getElementById(obj.attr.id);
-                if(radioBtn.checked)
-                {
-                  console.log(radioBtn.value);
-                  radioValue =radioBtn.value;
+    const validData = {};
+
+    for (let key of requiredFields) {
+      const genNameObj={}
+      formData.forEach((eachElemnt)=>{
+        if (eachElemnt.type==='radio') {
+          if (eachElemnt.options) {
+            eachElemnt.options.forEach((opt)=>{
+              // genType.push(opt.name);
+              genNameObj[opt.name]=opt.name;
+            });
+          }
+        }
+      })
+      for (const gen in genNameObj) {
+        const genList=document.getElementsByName(gen);
+        genList.forEach(genElemnt=>{
+          if (genElemnt.checked) {
+            if (key == genElemnt.name) {
+                const radioBtn = document.getElementById(genElemnt.id);
+                if (radioBtn.checked) {
+                    validData[key] = radioBtn.value;
                 }
-                validData[key] =radioValue;
-              })
+            }else{
+              if (!tempData[key]) {
+                return undefined;
+               }
+                else
+                validData[key] = tempData[key];
             }
-            
-          })
-      }else{
-        if (!tempData[key]) {
-          return undefined;
-         }
-          else
-          validData[key] = tempData[key];
-      }
-        
-        
+        }
+        })
+      }  
     }
-// console.log(validData,'in validateFormData ...');
-    return validData;
+      if (Object.keys(validData).length==0) {
+        return undefined
+      }else if(Object.keys(validData).length==requiredFields.length)
+      { //console.log(Object.keys(validData).length,Object.keys(tempData).length);
+        return {...validData,...tempData}
+      }
+       
+           
    }
 
    getFormData(formData)
@@ -308,7 +319,6 @@ export default class Form {
           element.options.forEach((optionID)=>{
             if (optionID.attr) {
               const option=document.getElementById(optionID.attr.id);
-              // console.log(option);
               if (option.checked) {
                 tempData[optionID.attr.id]= option.value;             
               }
@@ -316,17 +326,20 @@ export default class Form {
           })
         }
       });
-      // allData
-       console.log(tempData);
       const validData= this.validateFormData(tempData,formData);
-      console.log(validData);
+      if (validData) {
+        console.log('returning data OBJ to use in local staorage');
+        return validData
+      }
      
     }
-    clickSubmit(formData){
-      const submitBtn=document.getElementById('employeeForm');
-      submitBtn.addEventListener('submit',()=>{
-        // console.log('submit clickes .....');
-        this.getFormData(formData);
-      })
-    }
+    // clickSubmit(formData){
+    //   const submitBtn=document.getElementById('employeeForm');
+    //   submitBtn.addEventListener('submit',()=>{
+    //     // console.log('submit clickes .....');
+    //    const data= this.getFormData(formData);
+    //   //  console.log(data);
+    //   return data;
+    //   })
+    // }
 }

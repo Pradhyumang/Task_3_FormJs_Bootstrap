@@ -42,17 +42,17 @@ export default class Storage {
     //  for storing data in local storage 
     
     const dataAll=this.getAllData();
-    if (dataAll===null||dataAll.length==0) {
+    if (dataAll===null||dataAll.length===0) {
         let arr=[];
-        arr.push({id:1,...data});
+        arr.push(data);
         this.save(arr);
         alert('Insert SuccesFull');
     }
     else{
       let arr=dataAll;
-      let index=this.idCounter(arr.length);
-      arr.push({id:index,...data});
+      arr.push(data);
       this.save(arr);
+      alert('Insert SuccesFull');
       return true
     }
   }

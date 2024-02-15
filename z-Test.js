@@ -112,3 +112,30 @@
 // </optgroup>
 // </select>`)
 
+
+// form validation gender
+ // if (genElemnt.checked) {
+          //   if(key==genElemnt.name) {
+          //       formData.forEach((obj)=>{
+          //         if (obj.type=='radio') {
+          //           obj.options.forEach((option)=>{
+          //             const radioBtn=document.getElementById(option.attr.id);
+          //             if(radioBtn.checked)
+          //             {
+          //               // console.log(radioBtn.value);
+          //               console.log('@key :',key,'@value...',radioBtn.value);
+          //               validData[key] =radioBtn.value;
+                        
+          //             }
+          //           })
+          //         }
+                  
+          //       })
+          //   }else{
+          //     if (!tempData[key]) {
+          //       return undefined;
+          //      }
+          //       else
+          //       validData[key] = tempData[key];
+          //   }
+          // }
