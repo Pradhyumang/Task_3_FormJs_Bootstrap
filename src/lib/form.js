@@ -21,6 +21,9 @@ export default class Form {
   }
   // form creation CREATEFORM
   // create methods/event to create form/ reset form/ submit form, etc\
+  // getElementsById(ID){
+  //   return document.getElementById(ID);//?''
+  // }
   createForm(formData)
   {
     formData.forEach(element => {
@@ -225,53 +228,24 @@ export default class Form {
       if (obj.attr) {
         if (obj.attr.required) {
           // console.log(obj.attr.required,'required');
-          requiredFields[requiredFields.length]=obj.attr.id;
+          requiredFields[requiredFields.length]=obj.key;
         }
       }
-      if (obj.type=='radio') {
+      if (obj.type==='radio') {
         if (obj.options) {
           let tempName;
-          obj.options.forEach((obj)=>{
-            if (obj.attr) {
-              if (obj.attr.required) {
-               tempName=obj.name;
+          obj.options.forEach((opt)=>{
+            if (opt.attr) {
+              if (opt.attr.required) {
+               tempName=obj.key;
               }
             }
           })
           requiredFields[requiredFields.length]=tempName;
         }
-      }else if(obj.type=='checkbox'){
-        if (obj.options) {
-          obj.options.forEach((obj)=>{
-            if (obj.attr) {
-              if (obj.attr.required) {
-                requiredFields[requiredFields.length]=obj.attr.id;
-              }
-            }
-          })
-        }
       }
-      
     })
-    //required field done getting in array done
-    // for (let key in tempData){
-    //   requiredFields[requiredFields.length]=key;
-    // }
-    // console.log(requiredFields);
-    // let id;
-    // formData.forEach((elementData)=>{
-    //   if (elementData.hasOwnProperty('getValue')) {
-    //     document.getElementsByTagName('')
-    //     element.addEventListener('change', (event)=> {
-    //       console.log('texst erer', event, elementData)
-    //     })
-    //   }
-    // })
-     
-    // console.log(id);
-
     const validData = {};
-
     for (let key of requiredFields) {
       const genNameObj={}
       formData.forEach((eachElemnt)=>{
@@ -306,7 +280,7 @@ export default class Form {
     }
       if (Object.keys(validData).length==0) {
         return undefined
-      }else if(Object.keys(validData).length==requiredFields.length)
+      }else if(Object.keys(validData).length===requiredFields.length)
       { //console.log(Object.keys(validData).length,Object.keys(tempData).length);
         return {...validData,...tempData}
       }
@@ -317,26 +291,48 @@ export default class Form {
    getFormData(formData)
     {
       const tempData={};
-      formData.forEach((element)=>{
+      formData.forEach((element,index)=>{
+        // tempData[element.key]=document.getElementById(element.attr?.id)?.value.trim();;
         if (element && element.attr) {
         if (element.type!='submit') {
           if (element.type!='reset') {
-            tempData[element.attr.id]= document.getElementById(element.attr.id).value.trim();   
+            tempData[element.key]= document.getElementById(element.attr.id).value.trim();   
           } 
        }
-       
-        }
+        }//radio
         if (element && element.options ) {
           element.options.forEach((optionID)=>{
             if (optionID.attr) {
               const option=document.getElementById(optionID.attr.id);
               if (option.checked) {
-                tempData[optionID.attr.id]= option.value;             
+                tempData[element.key]= option.value;             
               }
             }
           })
         }
+        if (element && element.type==='checkbox' ) {
+          const hobbies=[];
+          element.options.forEach((optionID)=>{
+            if (optionID.attr) {
+              const option=document.getElementById(optionID.attr.id);
+              if (option.checked) {
+                hobbies.push(option.value) ;     
+              }
+            }
+          })
+          tempData[element.key]= hobbies;
+        }
+        if (element && element.type==='hidden') {
+         if (element.hasOwnProperty('getValue')) {
+              tempData[element.key] =element.getValue(tempData);
+          }else{
+            console.error('getValue is not defined');
+          }
+        }
       });
+
+      
+      console.log(tempData);
       const validData= this.validateFormData(tempData,formData);
       if (validData) {
         console.log('returning data OBJ to use in local staorage');

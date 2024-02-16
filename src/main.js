@@ -19,7 +19,6 @@ class Main {
     const formTag=document.getElementById(formContainerId);
     formTag.addEventListener('submit',()=>{
      const data= frm.getFormData(formData);
-    //  console.log('data--->', data);
         storage.setStorage(data);
     })
 

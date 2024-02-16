@@ -10,12 +10,18 @@ export default class Storage {
     localStorage.setItem(this.storageId,JSON.stringify(data));
   }
   getAllData() {
+    try {
       let allData=JSON.parse(localStorage.getItem(this.storageId));
       return allData;
+    } catch (error) {
+      console.error('An error occurred:', error.message);
+    }
+      
   }
   getOneRow(id){
       let data=this.getAllData();
-      const userIdIndex=data.findIndex(dt=>dt.id==id);
+      console.log(data);
+      const userIdIndex=data.findIndex(dt=>dt.userId==id);
     if (userIdIndex!=-1) {
           const record=data[userIdIndex];
         return record;
