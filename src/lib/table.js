@@ -11,7 +11,10 @@ export default class Table {
     table.setAttribute('class','table caption-top');
     this.container.appendChild(table);
     const caption=document.createElement('caption');
-    caption.innerText='Total items : 1';
+    caption.innerText='Total items : ';
+    const span=document.createElement('span');
+    span.setAttribute('id','count');
+    caption.appendChild(span)
     table.appendChild(caption)
     // this.createTableHead(formData);
     const thead=document.createElement('thead');
@@ -26,23 +29,45 @@ export default class Table {
           tr.appendChild(th);
         }
       });
-
+        const th=document.createElement('th');
+        th.innerText='Action';
+        tr.appendChild(th);
+        const tbody=document.createElement('tbody');
+        table.appendChild(tbody);
       // this.tableData(formData);
       //data pass kr na hai
   }
    
-  tableData(formData){
-    const table=document.getElementsByTagName('table');
-    const tbody=document.createElement('tbody');
-    table[0].appendChild(tbody);
-    const tr=document.createElement('tr');
+  tableData(formData,data){
+     
+    const tbody = document.getElementsByTagName('table')[0]?.getElementsByTagName('tbody')[0];
+    tbody.innerHTML='';
+    data.forEach((dt) => {
+    const tr = document.createElement('tr');
     tbody.appendChild(tr);
-     formData.forEach(obj => {
-      const td=document.createElement('td');
-        if (obj.label) {
-          td.innerText=obj.label;
-          tr.appendChild(td);
+    let userId;
+    formData.forEach((obj) => {
+        const td = document.createElement('td');
+        if (obj.key) {
+            td.innerText = dt[obj.key];
+            tr.appendChild(td);
         }
+        if (obj.key==='userId') {
+          userId=dt[obj.key];
+        }
+      
        });
+       if (!userId) {
+        console.error('please mention userId as key for Id')
+       } 
+       const td=document.createElement('td');
+       td.innerHTML=`<input type="submit" value="Update" class="btn btn-success updateBtn" id="${userId}"> 
+                    <input type="button" value="delete" class="btn btn-danger deleteBtn" id="${userId}">`;
+       tr.appendChild(td);
+      })
+  }
+  count(count){
+    const span=document.getElementById('count');
+    span.innerText=count;
   }
 }

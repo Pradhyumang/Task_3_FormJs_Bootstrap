@@ -110,7 +110,7 @@ export default class Form {
       if (option.attr.required)
       radioCheckboxElement.setAttribute('required',option.attr.required);
       if (elementData.type=='radio')
-          if(option.value)//=='male'||option.value=='Male'||option.value=='MALE'
+          if(option.value=='male'||option.value=='Male'||option.value=='MALE')
                 radioCheckboxElement.setAttribute('checked',true);
       // radioTagCreated.setAttribute('class',option.attr.className);
       this.container.appendChild(radioCheckboxElement);
@@ -291,7 +291,25 @@ export default class Form {
    getFormData(formData)
     {
       const tempData={};
-      formData.forEach((element,index)=>{
+      
+     
+      formData.forEach((element)=>{
+        if (element && element.type==='hidden') {
+          if (element.hasOwnProperty('getValue')) {
+            const submitBtn = document.querySelector("input[type='submit']");
+              if (submitBtn) {
+                const createdAt=submitBtn.getAttribute('createdAt');
+                const userId=submitBtn.getAttribute('userId');
+                if (createdAt && userId) {
+                   tempData['createdAt']=createdAt;
+                   tempData['userId']=userId;
+                }
+              }
+              tempData[element.key] =element.getValue(tempData);
+           }else{
+             console.error('getValue is not defined');
+           }
+         }
         // tempData[element.key]=document.getElementById(element.attr?.id)?.value.trim();;
         if (element && element.attr) {
         if (element.type!='submit') {
@@ -322,17 +340,11 @@ export default class Form {
           })
           tempData[element.key]= hobbies;
         }
-        if (element && element.type==='hidden') {
-         if (element.hasOwnProperty('getValue')) {
-              tempData[element.key] =element.getValue(tempData);
-          }else{
-            console.error('getValue is not defined');
-          }
-        }
+        
       });
 
       
-      console.log(tempData);
+      // console.log(tempData);
       const validData= this.validateFormData(tempData,formData);
       if (validData) {
         console.log('returning data OBJ to use in local staorage');
@@ -340,13 +352,58 @@ export default class Form {
       }
      
     }
-    // clickSubmit(formData){
-    //   const submitBtn=document.getElementById('employeeForm');
-    //   submitBtn.addEventListener('submit',()=>{
-    //     // console.log('submit clickes .....');
-    //    const data= this.getFormData(formData);
-    //   //  console.log(data);
-    //   return data;
-    //   })
-    // }
+    removeAttr(){
+      const submitBtn = document.querySelector("input[type='submit']");
+          if (submitBtn) {
+            submitBtn.removeAttribute('createdAt');
+            submitBtn.removeAttribute('userId');
+          }
+    }
+    
+    setFormData(formData,selectedRow)
+    {
+      for (const element of formData) {
+        if (element && element.attr) {
+          if (element.type!='submit') {
+            if (element.type!='reset') {
+              document.getElementById(element.attr.id).value= selectedRow[element.key];
+            } 
+         }
+          }//radio
+          if (element && element.options ) {
+              for (const optionID of element.options) {
+                if (optionID.attr) {
+                 const radio= document.getElementById(optionID.attr.id);
+                 if (radio.value===selectedRow[element.key]) {
+                  radio.checked=true;
+                 }else
+                 radio.checked=false;
+                }
+              }
+          }
+          if (element && element.type==='checkbox' ) {
+              for (const optionID of element.options) {
+              if (optionID.attr) {
+                  for (const checkbox of selectedRow[element.key]) {
+                  const option=document.getElementById(optionID.attr.id);
+                  if (option.value==checkbox) {
+                    option.checked=true;
+                   }
+                }
+              }
+            }
+          }
+          // console.log(selectedRow);
+          if (element && element.type==='hidden') {
+           if (element.hasOwnProperty('getValue')) {
+                selectedRow[element.key] =element.getValue(selectedRow);
+                // console.log(selectedRow.userId,'id and creted at',selectedRow.createdAt);
+                const submitBtn = document.querySelector("input[type='submit']");
+                submitBtn.setAttribute('createdAt', selectedRow.createdAt);
+            }else{
+              console.error('getValue is not defined');
+            }
+          }
+      }
+    }
 }

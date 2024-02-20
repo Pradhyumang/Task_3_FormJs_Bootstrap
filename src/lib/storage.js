@@ -11,7 +11,7 @@ export default class Storage {
   }
   getAllData() {
     try {
-      let allData=JSON.parse(localStorage.getItem(this.storageId));
+      const allData=JSON.parse(localStorage.getItem(this.storageId));
       return allData;
     } catch (error) {
       console.error('An error occurred:', error.message);
@@ -19,8 +19,7 @@ export default class Storage {
       
   }
   getOneRow(id){
-      let data=this.getAllData();
-      console.log(data);
+      const data=this.getAllData();
       const userIdIndex=data.findIndex(dt=>dt.userId==id);
     if (userIdIndex!=-1) {
           const record=data[userIdIndex];
@@ -28,13 +27,13 @@ export default class Storage {
     }
   }
   deleteData(id){
-      let cnf=confirm('Are You Sure to Delete');
+      const cnf=confirm('Are You Sure to Delete');
       if (cnf) {
-          let data=this.getAllData();
-          const userIdIndex=data.findIndex(dt=>dt.id==id);
+          const data=this.getAllData();
+          const userIdIndex=data.findIndex(dt=>dt.userId==id);
           if (userIdIndex!=-1) {
               data.splice(userIdIndex,1);
-          this.save(data);
+              this.save(data);
           }
           return true
       }
@@ -49,13 +48,13 @@ export default class Storage {
     
     const dataAll=this.getAllData();
     if (dataAll===null||dataAll.length===0) {
-        let arr=[];
+        const arr=[];
         arr.push(data);
         this.save(arr);
         alert('Insert SuccesFull');
     }
     else{
-      let arr=dataAll;
+      const arr=dataAll;
       arr.push(data);
       this.save(arr);
       alert('Insert SuccesFull');
@@ -63,10 +62,10 @@ export default class Storage {
     }
   }
   updateData(idUser,updateInfo){
-    let data=this.getAllData();
-    const userIdIndex=data.findIndex(dt=>dt.id==idUser);
+    const data=this.getAllData();
+    const userIdIndex=data.findIndex(dt=>dt.userId==idUser);
     if (userIdIndex!=-1) {
-        data.splice(userIdIndex,1,{id:idUser,...updateInfo}); 
+        data.splice(userIdIndex,1,updateInfo); 
       this.save(data);
     }
     return true;

@@ -15,15 +15,125 @@ class Main {
     
     
     tbl.createTable(formData);
-    // submit btn CLick
-    const formTag=document.getElementById(formContainerId);
-    formTag.addEventListener('submit',()=>{
-     const data= frm.getFormData(formData);
+    // form submit btn CLick
+    
+    const formTag = document.getElementById(formContainerId);
+    formTag.addEventListener('submit', (event) => {
+      event.preventDefault()
+      const submiterButton = event.submitter;
+      if (submiterButton.value === 'Update') {
+        // const submitBtn = document.querySelector("input[type='submit']");
+        const id=submiterButton.getAttribute('userId');
+        const data= frm.getFormData(formData);
+        console.log(id,data);
+        if(storage.updateData(id,data)){
+          frm.removeAttr();
+        }
+        this.setDataToTable(formData,storage,tbl);
+        this.deleteBtnClick(formData,storage,tbl,frm,formContainerId);
+        this.updateBtnClick(formData,storage,tbl,frm,formContainerId)
+        this.changeUpdateSubmitIds();
+        this.count(storage,tbl);
+        document.getElementById(formContainerId).reset()
+        console.log('Update btn clicked');
+
+      } else if (submiterButton.value === 'Submit') {
+         const data= frm.getFormData(formData);
         storage.setStorage(data);
-    })
+        this.setDataToTable(formData,storage,tbl);
+        this.deleteBtnClick(formData,storage,tbl,frm,formContainerId);
+        this.updateBtnClick(formData,storage,tbl,frm,formContainerId)
+        this.count(storage,tbl);
+        frm.removeAttr();
+        document.getElementById(formContainerId).reset()  
+      }
+      this.reset(frm);     
+    });
 
-
+   //table
+     this.updateBtnClick(formData,storage,tbl,frm,formContainerId);
+     this.deleteBtnClick(formData,storage,tbl,frm,formContainerId);
+     this.setDataToTable(formData,storage,tbl)
+     this.count(storage,tbl);
+     this.reset(frm);
+     
   }
+  setDataToTable(formData,storage,tbl){
+    try {
+      const allData=storage.getAllData();
+      tbl.tableData(formData,allData);
+    } catch (error) {
+        console.log('Empty local storage data',error.message);
+    }
+  }
+  deleteBtnClick(formData,storage,tbl,frm,formContainerId)
+  {
+      setTimeout(()=>{
+      const deleteBtns=document.querySelectorAll('.deleteBtn');
+      for (const deleteBtn of deleteBtns) {
+        deleteBtn.addEventListener('click',()=>{
+          if (storage.deleteData(deleteBtn.id)) {
+            this.setDataToTable(formData,storage,tbl);
+            this.deleteBtnClick(formData,storage,tbl,frm,formContainerId);
+            this.updateBtnClick(formData,storage,tbl,frm,formContainerId);
+            this.changeUpdateSubmitIds();
+            this.count(storage,tbl);
+            frm.removeAttr();
+            document.getElementById(formContainerId).reset()
+          }
+        })
+      }
+    },0)
+  }
+
+  updateBtnClick(formData,storage,tbl,frm,formContainerId){
+    setTimeout(()=>{
+      const updateBtns=document.querySelectorAll('.updateBtn');
+      for (const updateBtn of updateBtns) {
+        updateBtn.addEventListener('click',()=>{
+         const selectedRow = storage.getOneRow(updateBtn.id);
+        //  console.log(selectedRow);
+          const submitBtn = document.querySelector("input[type='submit']");
+        if (submitBtn) {
+          submitBtn.value = 'Update';
+          submitBtn.classList.add("btn-success");
+          submitBtn.setAttribute('userId', updateBtn.id);
+          submitBtn.id = 'btnUpdate';
+          }
+          else{
+            console.error('Submit Button id must be btnSubmit');
+          }
+          frm.setFormData(formData,selectedRow)
+          this.setDataToTable(formData,storage,tbl)
+          this.deleteBtnClick(formData,storage,tbl,frm,formContainerId);
+          this.updateBtnClick(formData,storage,tbl,frm,formContainerId);
+          // this.formUpdateBtn(formContainerId);
+          
+        })
+      }
+    },0)
+  }
+  reset(frm){
+    const reset=document.querySelector("input[type='reset']");
+    reset.addEventListener('click',()=>{
+      frm.removeAttr();
+    this.changeUpdateSubmitIds();
+    })
+  }
+  changeUpdateSubmitIds(){
+    const updateBtn=document.getElementById('btnUpdate');
+    if(updateBtn){
+      updateBtn.value='Submit';
+      updateBtn.classList.add("btn-primary");
+      updateBtn.classList.remove("btn-success");
+      updateBtn.id='btnSubmit';
+    }
+  }
+  count(storage,tbl){
+    const count=storage.getAllData().length;
+    tbl.count(count);
+  }
+ 
 }
 //formContainerId: HTML Div element id inside of which you want to create form4
 // formContainerId -> #employeeForm of current index.html
