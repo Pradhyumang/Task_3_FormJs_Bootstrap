@@ -7,9 +7,12 @@ export default class Table {
   // create methods/event to refresh table data, add data row, update data row, delete data row, etc
   createTable(formData)
   {
+    const div=document.createElement('div');
+    div.setAttribute('class','table-responsive')
+    this.container.appendChild(div)
     const table=document.createElement('table');
     table.setAttribute('class','table caption-top');
-    this.container.appendChild(table);
+    div.appendChild(table);
     const caption=document.createElement('caption');
     caption.innerText='Total items : ';
     const span=document.createElement('span');
@@ -61,8 +64,20 @@ export default class Table {
         console.error('please mention userId as key for Id')
        } 
        const td=document.createElement('td');
-       td.innerHTML=`<input type="submit" value="Update" class="btn btn-success updateBtn" id="${userId}"> 
-                    <input type="button" value="delete" class="btn btn-danger deleteBtn" id="${userId}">`;
+       const submitBtn=document.createElement('input');
+       submitBtn.setAttribute('type','submit');
+       submitBtn.setAttribute('value','Update');
+       submitBtn.setAttribute('style','border-radius: 19px;');
+       submitBtn.setAttribute('class','btn btn-primary updateBtn');
+       submitBtn.setAttribute('id',userId);
+       td.appendChild(submitBtn);
+       const updateBt=document.createElement('input');
+       updateBt.setAttribute('type','button');
+       updateBt.setAttribute('value','delete');
+       updateBt.setAttribute('style','border-radius: 19px;');
+       updateBt.setAttribute('class','btn btn-danger deleteBtn');
+       updateBt.setAttribute('id',userId);
+       td.appendChild(updateBt);
        tr.appendChild(td);
       })
   }

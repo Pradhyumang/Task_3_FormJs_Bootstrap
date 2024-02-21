@@ -49,9 +49,9 @@ justify-content: center;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    overflow: auto;
 }
 .tableSection >div {
+    width: 100%;
     padding: 5%;
 }
 caption{

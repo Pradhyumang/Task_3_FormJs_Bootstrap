@@ -66,7 +66,8 @@ export default class Storage {
     const userIdIndex=data.findIndex(dt=>dt.userId==idUser);
     if (userIdIndex!=-1) {
         data.splice(userIdIndex,1,updateInfo); 
-      this.save(data);
+        this.save(data);
+        alert('update successFull');
     }
     return true;
   }

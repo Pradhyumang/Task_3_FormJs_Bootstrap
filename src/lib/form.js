@@ -135,16 +135,59 @@ export default class Form {
        {
           this.setLabel(elementData);
           const element=document.createElement('input');
-          // if (elementData.attr.hasOwnProperty('onchange')) {
-          //   element.addEventListener('change', (event)=> {
-          //     console.log('erer', event.target              )
-          //     event.target.classList.add('teet')
-        
-          //   })
-          // }
           //set attribue method
           this.setAttbts(element,elementData);
           this.container.appendChild(element);
+          const span=document.createElement('span');
+          span.setAttribute('id',elementData.attr.name);
+          this.container.appendChild(span);
+          const brElement = document.createElement('br');
+          this.container.appendChild(brElement);
+          if (elementData.attr.hasOwnProperty('onchange')) {
+            element.addEventListener('input', (event)=> {
+              // console.log('erer', event.target)
+              // this.onTextChange(event.target.value.trim());
+              // console.log(event.target.type);
+              if (event.target.type==='text') {
+              //   if (/^[a-zA-Z0-9\s]{4,}$/.test(event.target.value.trim())) 
+              //   {  
+              //     document.getElementById(event.target.id).style="";
+              //     console.log(event);
+              //   }else{
+              //     document.getElementById(event.target.id).style="border : 2px red solid"
+              //  }  
+              this.validateName(event.target.value.trim(),event.target.id)
+              // const inputElement = document.getElementById(event.target.id);
+              // const spanElement = inputElement.nextElementSibling;
+              // const brElement = document.createElement('br');
+              // spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
+              // spanElement.textContent = "Enter '${aa}'";
+              }else if(event.target.type==='tel'){
+                 if(/^[6789]\d{9}$/.test(event.target.value.trim()))
+                {
+                  document.getElementById(event.target.id).style="";
+                }
+                else{
+                  document.getElementById(event.target.id).style="border : 2px red solid"
+                } 
+              }else if(event.target.type==='number'){
+                if (/^[0-9\s]{6,}$/.test(event.target.value.trim())) 
+                {  
+                  document.getElementById(event.target.id).style="";
+                }else{
+                  document.getElementById(event.target.id).style="border : 2px red solid"
+               }  
+              }else if(event.target.type==='email'){
+                if (/^[\w-\.]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(event.target.value.trim())) 
+                {  
+                  document.getElementById(event.target.id).style="";
+                }else{
+                  document.getElementById(event.target.id).style="border : 2px red solid"
+               }  
+              }
+              
+            })
+          }
       }else
       {
         //for hidden tags
@@ -165,13 +208,18 @@ export default class Form {
     // console.log('textarea');
           this.setLabel(elementData);
           const element=document.createElement('textarea');
-          //set attribuess method call
-          // if (elementData.attr.hasOwnProperty('onchange')) {
-          //   element.addEventListener('change', (event)=> {
-          //     console.log('texst erer', event, elementData)
-          //   })
-          // }
-          // console.log('elementData--->', );
+          if (elementData.attr.hasOwnProperty('onchange')) {
+            element.addEventListener('input', (event)=> {
+              // console.log('erer', event.target)
+              // this.onTextChange(event.target.value.trim());
+              if (/^[a-zA-Z0-9\s]{4,}$/.test(event.target.value.trim())) 
+              { 
+                document.getElementById(event.target.id).style="";
+              }else{
+                document.getElementById(event.target.id).style="border : 2px red solid"
+             }  
+            })
+          }
           this.setAttbts(element,elementData);
           this.container.appendChild(element);
   }
@@ -278,7 +326,7 @@ export default class Form {
         })
       }  
     }
-      if (Object.keys(validData).length==0) {
+      if (Object.keys(validData).length===0) {
         return undefined
       }else if(Object.keys(validData).length===requiredFields.length)
       { //console.log(Object.keys(validData).length,Object.keys(tempData).length);
@@ -347,7 +395,6 @@ export default class Form {
       // console.log(tempData);
       const validData= this.validateFormData(tempData,formData);
       if (validData) {
-        console.log('returning data OBJ to use in local staorage');
         return validData
       }
      
@@ -406,4 +453,34 @@ export default class Form {
           }
       }
     }
+
+  validationMobile(phoneNoOrignal){
+    const len= phoneNoOrignal.length;
+     if(len==0){
+      return '';
+      }
+      else if(/^[6789]\d{9}$/.test(phoneNoOrignal))
+    {
+      return phoneNoOrignal;
+     }
+     else{
+     }
+  }
+  // validateEmail(email){
+  //   if (/^[\w-\.]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(event.target.value.trim())) 
+  //   {  
+  //     document.getElementById(event.target.id).style="";
+  //   }else{
+  //     document.getElementById(event.target.id).style="border : 2px red solid"
+  //  }  
+  // }
+  validateName(name,id){
+    if (/^[a-zA-Z0-9\s]{4,}$/.test(name.trim())) 
+   {  
+       document.getElementById(id).style="";
+        // console.log(event);
+   }else{
+        document.getElementById(id).style="border : 2px red solid"
+    }  
+  }
 }
