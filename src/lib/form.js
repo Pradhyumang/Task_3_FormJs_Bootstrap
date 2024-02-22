@@ -145,45 +145,69 @@ export default class Form {
           this.container.appendChild(brElement);
           if (elementData.attr.hasOwnProperty('onchange')) {
             element.addEventListener('input', (event)=> {
-              // console.log('erer', event.target)
-              // this.onTextChange(event.target.value.trim());
-              // console.log(event.target.type);
               if (event.target.type==='text') {
-              //   if (/^[a-zA-Z0-9\s]{4,}$/.test(event.target.value.trim())) 
-              //   {  
-              //     document.getElementById(event.target.id).style="";
-              //     console.log(event);
-              //   }else{
-              //     document.getElementById(event.target.id).style="border : 2px red solid"
-              //  }  
-              this.validateName(event.target.value.trim(),event.target.id)
-              // const inputElement = document.getElementById(event.target.id);
-              // const spanElement = inputElement.nextElementSibling;
-              // const brElement = document.createElement('br');
-              // spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
-              // spanElement.textContent = "Enter '${aa}'";
+              const inputText=this.validateText(event.target.value.trim(),event.target.id)
+              const inputElement = document.getElementById(event.target.id);
+              const spanElement = inputElement.nextElementSibling;
+              spanElement.style.color='red';
+              // console.log(spanElement.nextElementSibling);
+              if (spanElement.nextElementSibling!=='<br>') {
+                const brElement = document.createElement('br');                
+              }
+              spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
+              spanElement.textContent = ` ${event.target.placeholder} Properly`;
+              if (inputText) {
+                spanElement.style.display='none';
+              }else{
+                spanElement.style.display='inline';
+              }
+
               }else if(event.target.type==='tel'){
-                 if(/^[6789]\d{9}$/.test(event.target.value.trim()))
-                {
-                  document.getElementById(event.target.id).style="";
+                // yeha pe chnage kr na hai
+                const validData=this.validateTel(event.target.value.trim(),event.target.id)
+                const inputElement = document.getElementById(event.target.id);
+                const spanElement = inputElement.nextElementSibling;
+                spanElement.style.color='red';
+                if (spanElement.nextElementSibling!=='<br>') {
+                  const brElement = document.createElement('br');                
                 }
-                else{
-                  document.getElementById(event.target.id).style="border : 2px red solid"
-                } 
+                spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
+                spanElement.textContent = ` ${event.target.placeholder} Properly and number starts with 6-7-8-9`;
+                if (validData) {
+                  spanElement.style.display='none';
+                }else{
+                  spanElement.style.display='inline';
+                }
               }else if(event.target.type==='number'){
-                if (/^[0-9\s]{6,}$/.test(event.target.value.trim())) 
-                {  
-                  document.getElementById(event.target.id).style="";
+                const validData=this.validateNumber(event.target.value.trim(),event.target.id)
+                const inputElement = document.getElementById(event.target.id);
+                const spanElement = inputElement.nextElementSibling;
+                spanElement.style.color='red';
+                if (spanElement.nextElementSibling!=='<br>') {
+                  const brElement = document.createElement('br');                
+                }
+                spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
+                spanElement.textContent = ` ${event.target.placeholder} Properly It Should Be Number and Min 6`;
+                if (validData) {
+                  spanElement.style.display='none';
                 }else{
-                  document.getElementById(event.target.id).style="border : 2px red solid"
-               }  
+                  spanElement.style.display='inline';
+                }
               }else if(event.target.type==='email'){
-                if (/^[\w-\.]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(event.target.value.trim())) 
-                {  
-                  document.getElementById(event.target.id).style="";
+                const validData=this.validateEmail(event.target.value.trim(),event.target.id)
+                const inputElement = document.getElementById(event.target.id);
+                const spanElement = inputElement.nextElementSibling;
+                spanElement.style.color='red';
+                if (spanElement.nextElementSibling!=='<br>') {
+                  const brElement = document.createElement('br');                
+                }
+                spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
+                spanElement.textContent = ` ${event.target.placeholder} Properly `;
+                if (validData) {
+                  spanElement.style.display='none';
                 }else{
-                  document.getElementById(event.target.id).style="border : 2px red solid"
-               }  
+                  spanElement.style.display='inline';
+                }
               }
               
             })
@@ -208,20 +232,34 @@ export default class Form {
     // console.log('textarea');
           this.setLabel(elementData);
           const element=document.createElement('textarea');
+          this.setAttbts(element,elementData);
+          this.container.appendChild(element);
+          const span=document.createElement('span');
+          span.setAttribute('id',elementData.attr.name);
+          this.container.appendChild(span);
+          const brElement = document.createElement('br');
+          this.container.appendChild(brElement);
           if (elementData.attr.hasOwnProperty('onchange')) {
             element.addEventListener('input', (event)=> {
               // console.log('erer', event.target)
               // this.onTextChange(event.target.value.trim());
-              if (/^[a-zA-Z0-9\s]{4,}$/.test(event.target.value.trim())) 
-              { 
-                document.getElementById(event.target.id).style="";
-              }else{
-                document.getElementById(event.target.id).style="border : 2px red solid"
-             }  
+                const validData=this.validateTextarea(event.target.value.trim(),event.target.id)
+                const inputElement = document.getElementById(event.target.id);
+                const spanElement = inputElement.nextElementSibling;
+                spanElement.style.color='red';
+                if (spanElement.nextElementSibling!=='<br>') {
+                  const brElement = document.createElement('br');                
+                }
+                spanElement.parentElement.insertBefore(brElement, spanElement.nextSibling);
+                spanElement.textContent = ` ${event.target.placeholder} Properly Min 4 Char`;
+                if (validData) {
+                  spanElement.style.display='none';
+                }else{
+                  spanElement.style.display='inline';
+                }
+           
             })
           }
-          this.setAttbts(element,elementData);
-          this.container.appendChild(element);
   }
   createSelectOptionElement(elementData)
   {
@@ -329,7 +367,7 @@ export default class Form {
       if (Object.keys(validData).length===0) {
         return undefined
       }else if(Object.keys(validData).length===requiredFields.length)
-      { //console.log(Object.keys(validData).length,Object.keys(tempData).length);
+      { 
         return {...validData,...tempData}
       }
        
@@ -340,7 +378,6 @@ export default class Form {
     {
       const tempData={};
       
-     
       formData.forEach((element)=>{
         if (element && element.type==='hidden') {
           if (element.hasOwnProperty('getValue')) {
@@ -358,11 +395,31 @@ export default class Form {
              console.error('getValue is not defined');
            }
          }
-        // tempData[element.key]=document.getElementById(element.attr?.id)?.value.trim();;
-        if (element && element.attr) {
+        // tempData[element.key]=document.getElementById(element.attr?.id)?.value.trim();; 
+        // for inputs  text area type data
+      if (element && element.attr) {
         if (element.type!='submit') {
           if (element.type!='reset') {
-            tempData[element.key]= document.getElementById(element.attr.id).value.trim();   
+            //  tempData[element.key]= document.getElementById(element.attr.id).value.trim();  
+            if (element.type=='text') {              
+             const validValue= this.validateText(document.getElementById(element.attr.id).value.trim(),element.attr.id);
+              if(validValue){tempData[element.key]=validValue;}
+            }else if (element.type=='tel') {              
+              const validValue= this.validateTel(document.getElementById(element.attr.id).value.trim(),element.attr.id);
+              if(validValue){tempData[element.key]=validValue;}; 
+            }else if (element.type=='number') {              
+              const validValue= this.validateNumber(document.getElementById(element.attr.id).value.trim(),element.attr.id);
+              if(validValue){tempData[element.key]=validValue;}
+            }else if (element.type=='email') {              
+              const validValue= this.validateEmail(document.getElementById(element.attr.id).value.trim(),element.attr.id);
+              if(validValue){tempData[element.key]=validValue;}
+            }else if (element.type=='textarea') {              
+              const validValue= this.validateTextarea(document.getElementById(element.attr.id).value.trim(),element.attr.id);
+              if(validValue){tempData[element.key]=validValue;} 
+            }else{//select
+              tempData[element.key]= document.getElementById(element.attr.id).value.trim();   
+            }
+            
           } 
        }
         }//radio
@@ -466,21 +523,53 @@ export default class Form {
      else{
      }
   }
-  // validateEmail(email){
-  //   if (/^[\w-\.]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(event.target.value.trim())) 
-  //   {  
-  //     document.getElementById(event.target.id).style="";
-  //   }else{
-  //     document.getElementById(event.target.id).style="border : 2px red solid"
-  //  }  
-  // }
-  validateName(name,id){
-    if (/^[a-zA-Z0-9\s]{4,}$/.test(name.trim())) 
+ 
+  validateText(name,elementId){
+    if (/^[a-zA-Z0-9\s]{3,}$/.test(name.trim())) 
    {  
-       document.getElementById(id).style="";
+       document.getElementById(elementId).style="";
         // console.log(event);
+        return name;
    }else{
-        document.getElementById(id).style="border : 2px red solid"
+        document.getElementById(elementId).style="border : 2px red solid"
     }  
+  }
+  validateTel(number,elementId){
+    if(/^[6789]\d{9}$/.test(number.trim()))
+    {
+      document.getElementById(elementId).style="";
+      return number
+    }
+    else{
+      document.getElementById(elementId).style="border : 2px red solid"
+    } 
+  }
+  validateNumber(number,elementId)
+  {
+    if (/^[0-9\s]{6,}$/.test(number.trim())) 
+    {  
+     document.getElementById(elementId).style="";
+     return number
+      }else{
+      document.getElementById(elementId).style="border : 2px red solid"
+     }  
+  }
+  validateEmail(email,elementId){
+    if (/^[\w-\.]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email.trim())) 
+    {  
+      document.getElementById(elementId).style="";
+      return email
+    }else{
+      document.getElementById(elementId).style="border : 2px red solid"
+   }  
+  }
+  validateTextarea(textarea,elementId){
+       if (/^[a-zA-Z0-9\s]{4,}$/.test(textarea.trim())) 
+         { 
+         document.getElementById(elementId).style="";
+        return textarea
+        }else{
+         document.getElementById(elementId).style="border : 2px red solid"
+        }  
   }
 }

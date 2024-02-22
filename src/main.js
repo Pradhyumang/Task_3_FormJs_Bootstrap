@@ -14,6 +14,7 @@ class Main {
     // console.log(formData, frm, storage, tbl, 'Printed all instance of the class to remove eslint error');
     
     tbl.createTable(formData);
+    if (storage.getAllData()===null) {  storage.save([]); }
     this.tableVisibility(tableContainerId,storage);
     // form submit btn CLick
     
@@ -25,27 +26,33 @@ class Main {
         // const submitBtn = document.querySelector("input[type='submit']");
         const id=submiterButton.getAttribute('userId');
         const data= frm.getFormData(formData);
-        if(storage.updateData(id,data)){
-          frm.removeAttr();
+        if (data) {
+          if(storage.updateData(id,data)){
+            frm.removeAttr();
+            document.getElementById(formContainerId).reset()  
+            this.changeUpdateSubmitIds();
+          }
+        }else{
+          alert('Enter Data correctly')
         }
         this.setDataToTable(formData,storage,tbl);
         this.deleteBtnClick(formData,storage,tbl,frm,formContainerId,tableContainerId);
         this.updateBtnClick(formData,storage,tbl,frm,formContainerId)
-        this.changeUpdateSubmitIds();
         this.tableVisibility(tableContainerId,storage);
         this.count(storage,tbl);
-        document.getElementById(formContainerId).reset()  
 
       } else if (submiterButton.value === 'Submit') {
          const data= frm.getFormData(formData);
-        storage.setStorage(data);
+         if (data) {
+           storage.setStorage(data);
+           document.getElementById(formContainerId).reset()  
+         }else alert('Enter Data correctly')
         this.setDataToTable(formData,storage,tbl);
         this.deleteBtnClick(formData,storage,tbl,frm,formContainerId,tableContainerId);
         this.updateBtnClick(formData,storage,tbl,frm,formContainerId)
         this.tableVisibility(tableContainerId,storage);
         this.count(storage,tbl);
         frm.removeAttr();
-        document.getElementById(formContainerId).reset()  
       }
       this.reset(frm);     
     });
@@ -92,6 +99,7 @@ class Main {
       const updateBtns=document.querySelectorAll('.updateBtn');
       for (const updateBtn of updateBtns) {
         updateBtn.addEventListener('click',()=>{
+          this.spanDisplayNotDisplay();
          const selectedRow = storage.getOneRow(updateBtn.id);
         //  console.log(selectedRow);
           const submitBtn = document.querySelector("input[type='submit']");
@@ -114,11 +122,26 @@ class Main {
       }
     },0)
   }
+  spanDisplayNotDisplay(){
+    const inputs=document.querySelectorAll('input');
+    const spans=document.querySelectorAll('span');
+    const textareas=document.querySelectorAll('textarea')
+    for (const textarea of textareas) { textarea.style=''}
+    for (const span of spans) { if (span.id!='count') {span.innerHTML='' } }
+    for (const input of inputs) { if (input.type!='submit'){  if(input.type!='button') { input.style='';  }} }
+  }
   reset(frm){
     const reset=document.querySelector("input[type='reset']");
     reset.addEventListener('click',()=>{
       frm.removeAttr();
     this.changeUpdateSubmitIds();
+    this.spanDisplayNotDisplay();
+    // const inputs=document.querySelectorAll('input');
+    // const spans=document.querySelectorAll('span');
+    // const textareas=document.querySelectorAll('textarea')
+    // for (const textarea of textareas) { textarea.style=''}
+    // for (const span of spans) { if (span.id!='count') {span.innerHTML='' } }
+    // for (const input of inputs) { if (input.type!='submit'){  if(input.type!='button') { input.style='';  }} }
     })
   }
   changeUpdateSubmitIds(){
@@ -154,5 +177,5 @@ class Main {
 
 //pass formContainerId, storageId, tableContainerId to Main(formContainerId, storageId, tableContainerId)
 const main = new Main('employeeForm', 'employeeData', 'tableDiv');
-// console.log('this is main');
-// console.log(main);
+console.log('this is main');
+console.log(main);
