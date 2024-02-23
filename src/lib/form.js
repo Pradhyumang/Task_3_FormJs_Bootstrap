@@ -55,7 +55,7 @@ export default class Form {
       // console.log(key, elementData.attr[key]);
       if (key === "className")
         element.setAttribute("class", elementData.attr[key])
-      else if (key === 'onchange') {
+      else if (key === 'onchange' || key === 'onclick') {
         element.addEventListener(key.slice(2), elementData.attr[key])
       }
       else
