@@ -33,7 +33,7 @@ const formData = [
       placeholder: 'Enter name',
       name: 'txtName',
       required: true,
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -47,7 +47,7 @@ const formData = [
       placeholder: 'Enter email',
       name: 'txtName',
       required: true,
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -61,7 +61,7 @@ const formData = [
       placeholder: 'Enter Phone Number',
       name: 'txtName',
       required: true,
-      onchange: function () {}, 
+      onchange: function () { },
     },
   },
   {
@@ -76,7 +76,7 @@ const formData = [
       rows: '5',
       name: 'txtName',
       required: true, //Add validation for required field
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -90,7 +90,7 @@ const formData = [
       placeholder: 'Enter Street Address',
       name: 'txtName',
       required: true,
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -104,7 +104,7 @@ const formData = [
       placeholder: 'Enter City',
       name: 'txtName',
       required: true,
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -118,7 +118,7 @@ const formData = [
       placeholder: 'Enter State',
       name: 'txtName',
       required: true,
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -132,7 +132,7 @@ const formData = [
       placeholder: 'Enter Pin Code',
       name: 'txtName',
       required: true,
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
   {
@@ -145,7 +145,7 @@ const formData = [
       name: 'country',
       required: true,
       className: 'form-control columns',
-      onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
     options: [
       {
@@ -180,7 +180,7 @@ const formData = [
           id: 'male',
           className: 'form-check-input radioGender',
           required: true,
-          onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+          onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
         },
       },
       {
@@ -191,7 +191,7 @@ const formData = [
           id: 'female',
           className: 'form-check-input radioGender',
           required: true,
-          onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+          onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
         },
       },
     ],
@@ -209,7 +209,7 @@ const formData = [
         attr: {
           id: 'swimming',
           className: 'form-check-input radioHobbies',
-          onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+          onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
         },
       },
       {
@@ -219,7 +219,7 @@ const formData = [
         attr: {
           id: 'singing',
           className: 'form-check-input radioHobbies',
-          onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+          onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
         },
       },
       {
@@ -229,7 +229,7 @@ const formData = [
         attr: {
           id: 'writing',
           className: 'form-check-input radioHobbies',
-          onchange: function () {}, // e, obj, array, dataObjArray you will get in function argument
+          onchange: function () { }, // e, obj, array, dataObjArray you will get in function argument
         },
       },
     ],
@@ -257,7 +257,7 @@ const formData = [
       name: 'btnReset',
       className: 'form-control btn btn-block btn-danger reset mb-4',
       value: 'Reset',
-      onclick: function () {}, // e, obj, array, dataObjArray you will get in function argument
+      onclick: function () { }, // e, obj, array, dataObjArray you will get in function argument
     },
   },
 ];

@@ -65,6 +65,4 @@ form .textInput{
 .columns{
     background-color: #E6E6E6;
 }
-/* .red_border:focus {
-    border-color: red;
-} */
+.table{table-layout: auto }
