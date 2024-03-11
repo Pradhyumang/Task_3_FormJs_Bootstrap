@@ -13,11 +13,8 @@ export default class Form {
 
     // use formData to create form
 
-    // document.getElementsByTagName("body")[0].appendChild(form);
-    // console.log('Form data in form.js', formData);
     this.createForm(formData);
-    // this.createForm();
-    // this.clickSubmit(formData);
+
   }
   // form creation CREATEFORM
   // create methods/event to create form/ reset form/ submit form, etc\
@@ -493,4 +490,89 @@ export default class Form {
     if (validData) { spanElement.style.display = 'none'; }
     else { spanElement.style.display = 'inline'; }
   }
+  changeUpdateSubmitIds() {
+    const updateBtn = document.getElementById('btnUpdate');
+    if (updateBtn) {
+      updateBtn.value = 'Submit';
+      updateBtn.classList.add("btn-primary");
+      updateBtn.classList.remove("btn-success");
+      updateBtn.id = 'btnSubmit';
+    }
+  }
+  reset() {
+    const reset = document.querySelector("input[type='reset']");
+    reset.addEventListener('click', () => {
+      this.removeAttr();
+      this.changeUpdateSubmitIds();
+      this.spanDisplayNotDisplay();
+    })
+  }
+  spanDisplayNotDisplay() {
+    const inputs = document.querySelectorAll('input');
+    const spans = document.querySelectorAll('span');
+    const textareas = document.querySelectorAll('textarea')
+    for (const textarea of textareas) { textarea.style = '' }
+    for (const span of spans) { if (span.id != 'count') { span.innerHTML = '' } }
+    for (const input of inputs) { if (input.type != 'submit') { if (input.type != 'button') { input.style = ''; } } }
+  }
+  submitBtnClick(formData, formContainerId, storage, tbl) {
+    const formTag = document.getElementById(formContainerId);
+    formTag.addEventListener('submit', (event) => {
+      event.preventDefault()
+      const submiterButton = event.submitter;
+      if (submiterButton.value === 'Update') {
+        const id = submiterButton.getAttribute('userId');
+        const data = this.getFormData(formData);
+        if (data) {
+          if (storage.updateData(id, data)) {
+            this.removeAttr();
+            document.getElementById(formContainerId).reset()
+            this.changeUpdateSubmitIds();
+          }
+        }
+        else {
+          alert('Enter Data Correctly')
+        }
+        tbl.setDataToTable(formData, storage, tbl);
+
+
+      } else if (submiterButton.value === 'Submit') {
+        const data = this.getFormData(formData);
+        if (data) {
+          document.getElementById(formContainerId).reset()
+          storage.setStorage(data)
+          document.getElementById('tableDiv').style.display = 'block';
+        }
+        else {
+          alert('Enter Data Correctly');
+        }
+        tbl.setDataToTable(formData, storage, tbl);
+        tbl.count(storage);
+        this.removeAttr();
+      }
+    });
+  }
+  updateBtnClick(formData, storage, tbl, frm, tableContainerId) {
+    const tableContainer = document.getElementById(tableContainerId);
+    tableContainer.addEventListener('click', (event) => {
+      if (event.target.classList.contains('updateBtn')) {
+        frm.spanDisplayNotDisplay();
+        const selectedRow = storage.getOneRow(event.target.id);
+        const submitBtn = document.querySelector("input[type='submit']");
+        if (submitBtn) {
+          submitBtn.value = 'Update';
+          submitBtn.classList.add("btn-success");
+          submitBtn.setAttribute('userId', event.target.id);
+          submitBtn.id = 'btnUpdate';
+        }
+        else {
+          console.error('Submit Button id must be btnSubmit');
+        }
+        frm.setFormData(formData, selectedRow)
+        tbl.tableVisibility(tableContainerId, storage);
+      }
+    })
+
+  }
+
 }

@@ -80,8 +80,67 @@ export default class Table {
       tr.appendChild(td);
     })
   }
-  count(count) {
+
+  tableVisibility(tableContainerId, storage) {
+    if (storage.getAllData().length !== 0) {
+      const tableContainer = document.getElementById(tableContainerId)
+      if (tableContainer) {
+        tableContainer.style.display = 'block';
+      }
+    } else {
+      const tableContainer = document.getElementById(tableContainerId)
+      if (tableContainer) {
+        tableContainer.style.display = 'none';
+      }
+
+    }
+  }
+  count(storage) {
+    const count = storage.getAllData().length;
     const span = document.getElementById('count');
     span.innerText = count;
   }
+  setDataToTable(formData, storage, tbl) {
+    try {
+      const allData = storage.getAllData();
+      tbl.tableData(formData, allData);
+    } catch (error) {
+      console.log('Empty local storage data', error.message);
+    }
+  }
+
+  deleteBtnClick(formData, storage, tbl, frm, formContainerId, tableContainerId) {
+    const tableContainer = document.getElementById(tableContainerId);
+    tableContainer.addEventListener('click', (event) => {
+      if (event.target.classList.contains('deleteBtn')) {
+        const id = event.target.id;
+        if (id) {
+          if (storage.deleteData(id)) {
+            tbl.setDataToTable(formData, storage, tbl);
+            tbl.changeUpdateSubmitIds();
+            tbl.count(storage);
+            frm.removeAttr();
+            tbl.tableVisibility(tableContainerId, storage);
+            document.getElementById(formContainerId).reset();
+            frm.updateBtnClick(formData, storage, tbl, frm, tableContainerId);
+
+          }
+
+        } else {
+          console.error('ID not found');
+        }
+      }
+    });
+  }
+  changeUpdateSubmitIds() {
+    const updateBtn = document.getElementById('btnUpdate');
+    if (updateBtn) {
+      updateBtn.value = 'Submit';
+      updateBtn.classList.add("btn-primary");
+      updateBtn.classList.remove("btn-success");
+      updateBtn.id = 'btnSubmit';
+    }
+  }
+
+
 }
